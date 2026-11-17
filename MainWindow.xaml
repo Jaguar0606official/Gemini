@@ -1,96 +1,17 @@
-<Window x:Class="GeminiNetworkAssistant.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Gemini Network Assistant" Height="760" Width="1180"
-        MinHeight="650" MinWidth="960" WindowStartupLocation="CenterScreen"
-        Background="#111827" Foreground="#F3F4F6">
-    <Grid Margin="22">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Margin="0,0,0,18">
-            <StackPanel>
-                <TextBlock Text="Gemini Network Assistant" FontSize="27" FontWeight="SemiBold"/>
-                <TextBlock Text="Сетевая диагностика и управление DNS" Foreground="#9CA3AF" Margin="0,5,0,0"/>
-            </StackPanel>
-            <Border DockPanel.Dock="Right" Background="#263449" CornerRadius="12" Padding="12,7" VerticalAlignment="Center">
-                <TextBlock Text="MVP 0.4" Foreground="#C7D2FE" FontWeight="SemiBold"/>
-            </Border>
-        </DockPanel>
-
-        <TabControl Grid.Row="1" Background="#111827" BorderBrush="#374151" Foreground="#F3F4F6">
-            <TabItem Header="Диагностика сети">
-                <Grid Margin="12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel>
-                        <TextBlock Text="Проверка подключения к Google" FontSize="20" FontWeight="SemiBold"/>
-                        <TextBlock Text="Проверка DNS, TCP 443 и HTTPS. Системные настройки не меняются."
-                                   Foreground="#9CA3AF" Margin="0,5,0,12"/>
-                        <Button x:Name="RunDiagnosticsButton" Content="Запустить диагностику"
-                                Click="RunDiagnostics_Click" Padding="14,9" HorizontalAlignment="Left"
-                                Background="#6577E8" Foreground="White" BorderThickness="0"/>
-                    </StackPanel>
-                    <TextBox x:Name="LogBox" Grid.Row="1" Margin="0,14,0,0"
-                             Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151"
-                             FontFamily="Consolas" FontSize="12" IsReadOnly="True"
-                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="DNS Manager">
-                <Grid Margin="12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel>
-                        <TextBlock Text="Управление DNS Windows" FontSize="20" FontWeight="SemiBold"/>
-                        <TextBlock Text="Выбери сетевой адаптер и DNS-провайдера. Для изменения настроек запусти программу от имени администратора."
-                                   Foreground="#9CA3AF" TextWrapping="Wrap" Margin="0,5,0,12"/>
-                        <WrapPanel>
-                            <ComboBox x:Name="AdapterBox" Width="330" Padding="7" Margin="0,0,8,8"
-                                      DisplayMemberPath="DisplayName"/>
-                            <Button Content="Обновить адаптеры" Click="RefreshAdapters_Click" Padding="12,7" Margin="0,0,8,8"/>
-                            <ComboBox x:Name="DnsProviderBox" Width="190" Padding="7" Margin="0,0,8,8">
-                                <ComboBoxItem Content="Cloudflare (1.1.1.1)" Tag="1.1.1.1;1.0.0.1" IsSelected="True"/>
-                                <ComboBoxItem Content="Google (8.8.8.8)" Tag="8.8.8.8;8.8.4.4"/>
-                                <ComboBoxItem Content="Quad9 (9.9.9.9)" Tag="9.9.9.9;149.112.112.112"/>
-                            </ComboBox>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <Button Content="Применить DNS" Click="ApplyDns_Click" Padding="14,9" Margin="0,0,8,8"
-                                    Background="#6577E8" Foreground="White" BorderThickness="0"/>
-                            <Button Content="Восстановить DNS до запуска" Click="RestoreDns_Click" Padding="14,9" Margin="0,0,8,8"/>
-                            <Button Content="Показать текущий DNS" Click="ShowDns_Click" Padding="14,9" Margin="0,0,8,8"/>
-                        </WrapPanel>
-                    </StackPanel>
-                    <TextBox x:Name="DnsLogBox" Grid.Row="1" Margin="0,10,0,0" MinHeight="190"
-                             Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151"
-                             FontFamily="Consolas" IsReadOnly="True" TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"/>
-                    <TextBlock Grid.Row="2" Text="Важно: смена DNS влияет только на разрешение доменных имён. Она не меняет внешний IP, страну аккаунта или региональную доступность Google. Снимок DNS хранится только до закрытия программы. Если адаптер использовал автоматическое получение DNS (DHCP), восстановление исходного режима после ручной смены DNS может потребовать сброса DNS-настроек адаптера."
-                               Foreground="#FCD34D" TextWrapping="Wrap" Margin="0,12,0,0" VerticalAlignment="Top"/>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="О программе">
-                <StackPanel Margin="18" MaxWidth="800" HorizontalAlignment="Left">
-                    <TextBlock Text="Gemini Network Assistant 0.4" FontSize="22" FontWeight="SemiBold"/>
-                    <TextBlock Text="Утилита проверяет сетевое подключение к контрольным адресам Google и позволяет вручную менять DNS-серверы выбранного сетевого адаптера."
-                               Foreground="#D1D5DB" TextWrapping="Wrap" Margin="0,12,0,0"/>
-                    <TextBlock Text="Изменение DNS не меняет внешний IP, страну аккаунта и не гарантирует доступ к сервисам, ограниченным по региону. Настройки DNS меняются только по нажатию соответствующей кнопки."
-                               Foreground="#FCD34D" TextWrapping="Wrap" Margin="0,12,0,0"/>
-                    <TextBlock Text="Перед изменением DNS рекомендуется сохранить текущие настройки сети." Margin="0,12,0,0"/>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
-        <TextBlock Grid.Row="2" Text="Сетевая диагностика • управление DNS • изменения выполняются только вручную"
-                   Foreground="#6B7280" Margin="0,12,0,0"/>
-    </Grid>
+<Window x:Class="GeminiNetworkAssistant.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Gemini Network Assistant" Height="820" Width="1220" MinHeight="680" MinWidth="980" WindowStartupLocation="CenterScreen" Background="#111827" Foreground="#F3F4F6">
+ <Grid Margin="20"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <DockPanel Grid.Row="0" Margin="0,0,0,16"><StackPanel><TextBlock Text="Gemini Network Assistant" FontSize="27" FontWeight="SemiBold"/><TextBlock Text="Диагностика подключения • контроль VPN • безопасное управление DNS" Foreground="#9CA3AF" Margin="0,4,0,0"/></StackPanel><Border DockPanel.Dock="Right" Background="#263449" CornerRadius="10" Padding="14,7" VerticalAlignment="Center"><TextBlock Text="FINAL 1.0" Foreground="#C7D2FE" FontWeight="SemiBold"/></Border></DockPanel>
+  <TabControl Grid.Row="1" Background="#111827" BorderBrush="#374151" Foreground="#F3F4F6">
+   <TabItem Header="Обзор подключения"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="14">
+    <TextBlock Text="Внешнее подключение" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Получаем публичный IP и примерную страну выхода. Для этого IP передаётся внешним сервисам ipify и ipwho.is." Foreground="#9CA3AF" TextWrapping="Wrap" Margin="0,5,0,12"/>
+    <WrapPanel><Button x:Name="CheckPublicButton" Content="Проверить внешний IP" Click="CheckPublic_Click" Padding="14,9" Background="#6577E8" Foreground="White" BorderThickness="0" Margin="0,0,8,8"/><Button Content="Обновить адаптеры" Click="RefreshAdapters_Click" Padding="14,9" Margin="0,0,8,8"/><Button x:Name="MonitorButton" Content="Начать мониторинг (60 сек)" Click="Monitor_Click" Padding="14,9" Margin="0,0,8,8"/></WrapPanel>
+    <Border Background="#0B1220" BorderBrush="#374151" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,4,0,14"><StackPanel><TextBlock Text="Публичный IP / страна" Foreground="#9CA3AF"/><TextBlock x:Name="PublicIpText" Text="Ещё не проверено" FontSize="22" FontWeight="SemiBold" Margin="0,5,0,0"/><TextBlock x:Name="PublicGeoText" Text="" Foreground="#D1D5DB" Margin="0,4,0,0"/></StackPanel></Border>
+    <TextBlock Text="Сетевые адаптеры" FontSize="18" FontWeight="SemiBold"/><DataGrid x:Name="AdapterGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" Height="180" Margin="0,8,0,14" Background="#0B1220" Foreground="#E5E7EB" RowBackground="#111827" AlternatingRowBackground="#1F2937"><DataGrid.Columns><DataGridTextColumn Header="Адаптер" Binding="{Binding Name}" Width="220"/><DataGridTextColumn Header="Тип" Binding="{Binding Kind}" Width="130"/><DataGridTextColumn Header="IPv4" Binding="{Binding Ipv4}" Width="150"/><DataGridTextColumn Header="Шлюз" Binding="{Binding Gateway}" Width="150"/><DataGridTextColumn Header="DNS" Binding="{Binding Dns}" Width="*"/></DataGrid.Columns></DataGrid>
+    <TextBlock Text="Журнал" FontSize="18" FontWeight="SemiBold"/><TextBox x:Name="MainLog" Height="210" Margin="0,8,0,0" Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151" FontFamily="Consolas" FontSize="12" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+   </StackPanel></ScrollViewer></TabItem>
+   <TabItem Header="Проверка Google"><Grid Margin="14"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><StackPanel><TextBlock Text="Проверка сетевой доступности" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Проверяем DNS, TCP 443 и HTTPS. Ответ сервера не означает, что Google разрешает использование сервиса для вашего региона или аккаунта." Foreground="#9CA3AF" TextWrapping="Wrap" Margin="0,5,0,12"/><WrapPanel><Button x:Name="DiagButton" Content="Запустить полную проверку" Click="Diagnostics_Click" Padding="14,9" Background="#6577E8" Foreground="White" BorderThickness="0" Margin="0,0,8,8"/><Button Content="Копировать журнал" Click="CopyLog_Click" Padding="14,9" Margin="0,0,8,8"/></WrapPanel></StackPanel><TextBox x:Name="DiagLog" Grid.Row="1" Margin="0,10,0,0" Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151" FontFamily="Consolas" FontSize="12" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/></Grid></TabItem>
+   <TabItem Header="DNS Manager"><Grid Margin="14"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><StackPanel><TextBlock Text="Ручное управление DNS" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Сначала выбери физический Ethernet/Wi-Fi или нужный VPN-адаптер. Применение DNS требует запуска от имени администратора. Резервная копия сохраняется между запусками." Foreground="#9CA3AF" TextWrapping="Wrap" Margin="0,5,0,12"/><WrapPanel><ComboBox x:Name="DnsAdapterBox" Width="430" Padding="7" Margin="0,0,8,8" DisplayMemberPath="Display"/><ComboBox x:Name="DnsProviderBox" Width="210" Padding="7" Margin="0,0,8,8"><ComboBoxItem Content="Cloudflare — 1.1.1.1" Tag="1.1.1.1;1.0.0.1" IsSelected="True"/><ComboBoxItem Content="Google — 8.8.8.8" Tag="8.8.8.8;8.8.4.4"/><ComboBoxItem Content="Quad9 — 9.9.9.9" Tag="9.9.9.9;149.112.112.112"/></ComboBox><Button Content="Обновить" Click="RefreshAdapters_Click" Padding="12,7" Margin="0,0,8,8"/></WrapPanel><WrapPanel><Button Content="Применить DNS" Click="ApplyDns_Click" Padding="14,9" Background="#6577E8" Foreground="White" BorderThickness="0" Margin="0,0,8,8"/><Button Content="Восстановить исходный DNS" Click="RestoreDns_Click" Padding="14,9" Margin="0,0,8,8"/><Button Content="Показать DNS Windows" Click="ShowDns_Click" Padding="14,9" Margin="0,0,8,8"/></WrapPanel></StackPanel><TextBox x:Name="DnsLog" Grid.Row="1" Margin="0,10,0,10" Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151" FontFamily="Consolas" FontSize="12" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/><TextBlock Grid.Row="2" Text="DNS не меняет внешний IP, страну аккаунта или региональные права доступа. Не меняй DNS VPN-адаптера без необходимости. Резервная копия включает режим DHCP/статический DNS и хранится в профиле Windows." Foreground="#FCD34D" TextWrapping="Wrap"/></Grid></TabItem>
+   <TabItem Header="Важно"><StackPanel Margin="18" MaxWidth="900"><TextBlock Text="Что программа может и чего не может" FontSize="21" FontWeight="SemiBold"/><TextBlock Text="Программа определяет фактический публичный IP, примерную страну выхода, активные адаптеры, DNS, шлюзы и доступность контрольных адресов Google. Мониторинг можно остановить в любой момент." TextWrapping="Wrap" Margin="0,12,0,0"/><TextBlock Text="Она не подменяет регион Google-аккаунта и не гарантирует доступ к Gemini или Antigravity. Если Google ограничивает аккаунт по стране, успешный VPN-туннель и зарубежный IP сами по себе не гарантируют доступ." Foreground="#FCD34D" TextWrapping="Wrap" Margin="0,12,0,0"/><TextBlock Text="Для проверки внешнего IP программа обращается к ipify и ipwho.is. Эти сервисы увидят публичный IP. Геолокация по IP приблизительная и может ошибаться." TextWrapping="Wrap" Margin="0,12,0,0"/><TextBlock Text="DNS-резервная копия находится в %LOCALAPPDATA%\GeminiNetworkAssistant\dns-backup.json. Если Windows или сетевые драйверы изменятся, проверь настройки после восстановления." TextWrapping="Wrap" Margin="0,12,0,0"/></StackPanel></TabItem>
+  </TabControl><TextBlock Grid.Row="2" Text="GNA 1.0 • локальная диагностика • без скрытого изменения сетевых настроек" Foreground="#6B7280" Margin="0,12,0,0"/>
+ </Grid>
 </Window>

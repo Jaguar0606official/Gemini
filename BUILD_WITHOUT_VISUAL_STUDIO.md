@@ -1,15 +1,8 @@
-# Получить EXE без установки Visual Studio
+# Сборка без Visual Studio
+1. Загрузите содержимое этой папки в корень GitHub-репозитория.
+2. Откройте вкладку Actions.
+3. Выберите Build Windows app и нажмите Run workflow.
+4. После успешной сборки скачайте GeminiNetworkAssistant-win-x64.
+5. Распакуйте artifact и запустите GeminiNetworkAssistant.exe.
 
-В архив добавлен GitHub Actions workflow для сборки Windows x64.
-
-1. Создай бесплатный репозиторий на GitHub.
-2. Загрузи туда всё содержимое этого проекта, включая скрытую папку `.github`.
-3. Открой вкладку Actions.
-4. Выбери workflow **Build Windows app** и нажми **Run workflow**.
-5. После успешной сборки открой запуск workflow и скачай artifact `GeminiNetworkAssistant-win-x64`.
-6. Распакуй artifact и запусти `GeminiNetworkAssistant.exe`.
-
-Сборка self-contained: .NET Runtime отдельно устанавливать не требуется.
-Visual Studio на компьютере не нужна. Нужен доступ к GitHub для облачной сборки.
-
-Примечание: этот workflow пока публикует x64 Windows-приложение. Он не превращает программу в установщик.
+Для применения/восстановления DNS запускайте программу от имени администратора. Проверка IP и диагностика работают без повышенных прав.

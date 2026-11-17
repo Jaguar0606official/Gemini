@@ -1,26 +1,19 @@
-# Gemini Network Assistant — MVP 0.4
+# Gemini Network Assistant — Final 1.0
 
-WPF-утилита для Windows 10/11: сетевая диагностика контрольных адресов Google и ручное управление DNS.
+Windows 10/11 WPF network diagnostic and DNS management utility.
 
-## Возможности
-- Перечень активных сетевых адаптеров.
-- Проверка DNS, TCP 443 и HTTPS для контрольных адресов.
-- Ручное переключение IPv4 DNS на Cloudflare, Google или Quad9.
-- Просмотр текущих DNS-серверов.
-- Попытка восстановить DNS-снимок, сделанный при запуске/обновлении списка адаптеров.
+## What it does
+- Lists active network adapters, IPv4 addresses, gateways and DNS servers.
+- Checks the public IP and approximate exit country via ipify + ipwho.is (the public IP is sent to those services).
+- Can monitor public IP every 60 seconds; monitoring is opt-in and can be stopped.
+- Tests DNS, TCP 443 and HTTPS responses for Gemini, account, Antigravity and Google API hostnames.
+- Allows manual DNS changes with a persistent backup of the original DHCP/static mode and DNS addresses.
+- Restores DHCP DNS mode or original static DNS settings from `%LOCALAPPDATA%\GeminiNetworkAssistant\dns-backup.json`.
 
-## Важные ограничения
-- DNS влияет на разрешение доменных имён, но не меняет внешний IP и страну аккаунта.
-- Программа не обходит региональные ограничения Google и не гарантирует доступность Gemini или Antigravity.
-- Для изменения DNS нужны права администратора.
-- Снимок DNS хранится только в памяти текущего запуска. Перед закрытием программы восстанови настройки, если переключал DNS.
-- Если адаптер получал DNS автоматически через DHCP, после ручного назначения DNS восстановление автоматического режима может потребовать сброса DNS-настроек адаптера в Windows.
+## Important limitations
+This tool does not create a VPN/proxy tunnel, change account country, or bypass Google's regional eligibility rules. DNS changes do not change public IP. Public-IP geolocation is approximate. Successful HTTPS responses only demonstrate network reachability, not product access.
 
-## Сборка через GitHub Actions
-Workflow находится в `.github/workflows/build.yml`.
-1. Загрузи содержимое папки проекта в корень репозитория (чтобы `.github` и `.csproj` были в корне).
-2. Открой вкладку **Actions**.
-3. Выбери **Build Windows app** → **Run workflow**.
-4. После успешной сборки скачай artifact `GeminiNetworkAssistant-win-x64`.
+## Build on GitHub Actions
+Upload the contents of this folder to the root of your repository (the `.csproj` and `.github` folder must be at repository root). Then open Actions → Build Windows app → Run workflow. Download artifact `GeminiNetworkAssistant-win-x64`.
 
-Локально для сборки требуется .NET 8 SDK и Windows Desktop Runtime/SDK; проект использует WPF.
+For DNS changes, run the app as Administrator. Diagnostics and public-IP checks do not require Administrator rights. DNS backup is saved before the first change per interface and reused on later runs; if you intentionally want a new baseline after changing network configuration, remove the JSON backup file manually.
