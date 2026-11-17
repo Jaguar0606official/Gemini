@@ -16,7 +16,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        Log("GNA 0.3 запущен. Настройки сети не меняются автоматически.");
+        Log("GNA 0.4 запущен. Сетевые настройки меняются только вручную по команде пользователя.");
         RefreshAdapters();
     }
 
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
             catch { }
         }
         if (AdapterBox.Items.Count > 0) AdapterBox.SelectedIndex = 0;
-        DnsLog("Список адаптеров обновлён. Снимок текущих IPv4 DNS сохранён в памяти.");
+        DnsLog("Список адаптеров обновлён. Снимок текущих IPv4 DNS сохранён в памяти до закрытия программы.");
     }
 
     private static bool IsAdministrator()

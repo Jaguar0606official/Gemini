@@ -13,55 +13,14 @@
         <DockPanel Grid.Row="0" Margin="0,0,0,18">
             <StackPanel>
                 <TextBlock Text="Gemini Network Assistant" FontSize="27" FontWeight="SemiBold"/>
-                <TextBlock Text="Локальный AI и сетевая диагностика" Foreground="#9CA3AF" Margin="0,5,0,0"/>
+                <TextBlock Text="Сетевая диагностика и управление DNS" Foreground="#9CA3AF" Margin="0,5,0,0"/>
             </StackPanel>
             <Border DockPanel.Dock="Right" Background="#263449" CornerRadius="12" Padding="12,7" VerticalAlignment="Center">
-                <TextBlock Text="MVP 0.3" Foreground="#C7D2FE" FontWeight="SemiBold"/>
+                <TextBlock Text="MVP 0.4" Foreground="#C7D2FE" FontWeight="SemiBold"/>
             </Border>
         </DockPanel>
 
         <TabControl Grid.Row="1" Background="#111827" BorderBrush="#374151" Foreground="#F3F4F6">
-            <TabItem Header="Локальный AI">
-                <Grid Margin="12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <DockPanel Margin="0,0,0,12">
-                        <StackPanel>
-                            <TextBlock Text="Чат с локальной моделью" FontSize="20" FontWeight="SemiBold"/>
-                            <TextBlock Text="Ollama работает на этом компьютере. Облачный сервер и VPN не нужны."
-                                       Foreground="#9CA3AF" Margin="0,5,0,0"/>
-                        </StackPanel>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Модель:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBox x:Name="ModelBox" Text="llama3.2:3b" Width="150" Padding="7"
-                                     Background="#202938" Foreground="White" BorderBrush="#4B5563"/>
-                            <Button Content="Проверить Ollama" Click="CheckOllama_Click" Margin="8,0,0,0"
-                                    Padding="10,6" Background="#374151" Foreground="White" BorderThickness="0"/>
-                        </StackPanel>
-                    </DockPanel>
-                    <TextBox x:Name="ChatBox" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True"
-                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
-                             Background="#0B1220" Foreground="#E5E7EB" BorderBrush="#374151"
-                             FontSize="14" Padding="12"/>
-                    <Grid Grid.Row="2" Margin="0,12,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox x:Name="PromptBox" Grid.Column="0" MinHeight="64" MaxHeight="120"
-                                 AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
-                                 Background="#202938" Foreground="White" BorderBrush="#4B5563"
-                                 Padding="10" ToolTip="Напиши сообщение. Ctrl+Enter — отправить."/>
-                        <Button x:Name="SendButton" Grid.Column="1" Content="Отправить"
-                                Click="SendMessage_Click" Margin="10,0,0,0" Padding="18,10"
-                                Background="#6577E8" Foreground="White" BorderThickness="0"
-                                FontWeight="SemiBold" VerticalAlignment="Stretch"/>
-                    </Grid>
-                </Grid>
-            </TabItem>
             <TabItem Header="Диагностика сети">
                 <Grid Margin="12">
                     <Grid.RowDefinitions>
@@ -115,23 +74,23 @@
                              Background="#0B1220" Foreground="#D1D5DB" BorderBrush="#374151"
                              FontFamily="Consolas" IsReadOnly="True" TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto"/>
-                    <TextBlock Grid.Row="2" Text="Важно: смена DNS влияет только на разрешение доменных имён. Она не меняет внешний IP, страну аккаунта или региональную доступность Google. Исходные DNS сохраняются в памяти до закрытия программы; для восстановления после перезапуска потребуется повторно настроить DNS вручную или добавить постоянное резервное хранение."
+                    <TextBlock Grid.Row="2" Text="Важно: смена DNS влияет только на разрешение доменных имён. Она не меняет внешний IP, страну аккаунта или региональную доступность Google. Снимок DNS хранится только до закрытия программы. Если адаптер использовал автоматическое получение DNS (DHCP), восстановление исходного режима после ручной смены DNS может потребовать сброса DNS-настроек адаптера."
                                Foreground="#FCD34D" TextWrapping="Wrap" Margin="0,12,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
 
             <TabItem Header="О программе">
                 <StackPanel Margin="18" MaxWidth="800" HorizontalAlignment="Left">
-                    <TextBlock Text="Gemini Network Assistant 0.3" FontSize="22" FontWeight="SemiBold"/>
-                    <TextBlock Text="Локальный чат использует Ollama API по адресу http://localhost:11434. Установи Ollama и загрузи модель перед первым использованием."
+                    <TextBlock Text="Gemini Network Assistant 0.4" FontSize="22" FontWeight="SemiBold"/>
+                    <TextBlock Text="Утилита проверяет сетевое подключение к контрольным адресам Google и позволяет вручную менять DNS-серверы выбранного сетевого адаптера."
                                Foreground="#D1D5DB" TextWrapping="Wrap" Margin="0,12,0,0"/>
-                    <TextBlock Text="Эта программа не обходит региональные ограничения Google и не изменяет сетевые настройки Windows."
+                    <TextBlock Text="Изменение DNS не меняет внешний IP, страну аккаунта и не гарантирует доступ к сервисам, ограниченным по региону. Настройки DNS меняются только по нажатию соответствующей кнопки."
                                Foreground="#FCD34D" TextWrapping="Wrap" Margin="0,12,0,0"/>
-                    <TextBlock Text="Загрузка Ollama: https://ollama.com/download" Margin="0,12,0,0"/>
+                    <TextBlock Text="Перед изменением DNS рекомендуется сохранить текущие настройки сети." Margin="0,12,0,0"/>
                 </StackPanel>
             </TabItem>
         </TabControl>
-        <TextBlock Grid.Row="2" Text="Локальный AI • сетевые проверки • настройки Windows не изменяются"
+        <TextBlock Grid.Row="2" Text="Сетевая диагностика • управление DNS • изменения выполняются только вручную"
                    Foreground="#6B7280" Margin="0,12,0,0"/>
     </Grid>
 </Window>
