@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
@@ -260,12 +261,12 @@ public partial class MainWindow : Window
         {
             var backup = await GetBackupFromFileAsync(adapter.InterfaceIndex);
             if (backup == null) { Write(DnsLog, "Резервная копия для этого адаптера не найдена."); return; }
-            var script = backup.Dhcp
+            var script = backup.DhcpEnabled
                 ? $"Set-DnsClientServerAddress -InterfaceIndex {backup.InterfaceIndex} -ResetServerAddresses; Clear-DnsClientCache; 'DNS_DHCP_RESTORED'"
                 : $"Set-DnsClientServerAddress -InterfaceIndex {backup.InterfaceIndex} -ServerAddresses @({string.Join(",", backup.Servers.Select(PsQuote))}); Clear-DnsClientCache; 'DNS_STATIC_RESTORED'";
             var res = await PowerShell(script);
             Write(DnsLog, res.Output);
-            if (res.Code == 0) Write(DnsLog, backup.Dhcp ? "Восстановлен автоматический DNS (DHCP)." : "Восстановлены сохранённые статические DNS.");
+            if (res.Code == 0) Write(DnsLog, backup.DhcpEnabled ? "Восстановлен автоматический DNS (DHCP)." : "Восстановлены сохранённые статические DNS.");
         }
         catch (Exception ex) { Write(DnsLog, "Ошибка восстановления: " + ex.Message); }
     }
